@@ -12,19 +12,23 @@ public class VideoLoader : MonoBehaviour {
 	VideoPlayer activeVideoPlayer;
 	Renderer videoRenderer;
 
+	int loadAfterNextFrames;
+
 	void Start () {
 		Application.targetFrameRate = 300;
 		videoRenderer = this.gameObject.GetComponent<Renderer>();
 		for (int i = 0; i < videoPlayers.Length; i++) {
 			videoPlayers[i] = AddVideoPlayer();
 		}
+		loadAfterNextFrames = UnityEngine.Random.Range(150, 300);
 		LoadAndPlayNext();
 	}
 	
 	void Update () {
-		if (Time.frameCount % 200 == 0) {
+		if (Time.frameCount % loadAfterNextFrames == 0) {
 			print("load and play next video...");
 			LoadAndPlayNext();
+			loadAfterNextFrames = UnityEngine.Random.Range(150, 300);
 		}
 	}
 
@@ -70,9 +74,10 @@ public class VideoLoader : MonoBehaviour {
 	}
 
 	string GetNextVideoUrl() {
-		int index = (videoIndex + 1) % 3;
-		videoIndex = index;
-		return GetVideoUrl(index);
+		// int index = (videoIndex + 1) % 3;
+		// videoIndex = index;
+
+		return GetVideoUrl(UnityEngine.Random.Range(0, 3));
 	}
 
 	string GetVideoUrl(int index) {
